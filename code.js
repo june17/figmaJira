@@ -14,26 +14,25 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 // full browser environment (see documentation).
 // This shows the HTML page in "ui.html".
 figma.showUI(__html__);
-// Calls to "parent.postMessage" from within the HTML page will trigger this
-// callback. The callback will be passed the "pluginMessage" property of the
-// posted message.
 figma.ui.onmessage = (msg) => __awaiter(this, void 0, void 0, function* () {
     // One way of distinguishing between different types of messages sent from
     // your HTML page is to use an object with a "type" property like this.
     yield figma.loadFontAsync({ family: "Roboto", style: "Regular" });
     if (msg.type === 'create-rectangles') {
+        let cov = { width: 1920, height: 960, title: msg.textbox };
         const nodes = [];
-        for (let i = 0; i < msg.count; i++) {
-            const rect = figma.createEllipse();
-            const text2 = figma.createText();
-            text2.characters = "hello" + i;
-            rect.x = i * 150;
-            text2.x = i * 150;
-            rect.fills = [{ type: 'SOLID', color: { r: 1, g: .4, b: 0 } }];
-            figma.currentPage.appendChild(rect);
-            figma.currentPage.appendChild(text2);
-            nodes.push(rect);
-        }
+        const rect = figma.createRectangle();
+        const text2 = figma.createText();
+        text2.characters = cov.title;
+        rect.resize(cov.width, cov.height);
+        text2.x = 100;
+        text2.y = 750;
+        text2.fontSize = 120;
+        figma.currentPage.name = "Cover";
+        rect.fills = [{ type: 'SOLID', color: { r: 1, g: .4, b: 0 } }];
+        figma.currentPage.appendChild(rect);
+        figma.currentPage.appendChild(text2);
+        nodes.push(rect);
         figma.currentPage.selection = nodes;
         figma.viewport.scrollAndZoomIntoView(nodes);
     }
