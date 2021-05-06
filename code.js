@@ -26,7 +26,7 @@ figma.ui.onmessage = (msg) => __awaiter(this, void 0, void 0, function* () {
         text2.characters = cov.title;
         rect.resize(cov.width, cov.height);
         text2.x = 100;
-        text2.y = 750;
+        text2.y = 708;
         text2.fontSize = 120;
         figma.currentPage.name = "Cover";
         rect.fills = [{ type: 'SOLID', color: { r: 1, g: .4, b: 0 } }];
