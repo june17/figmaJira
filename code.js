@@ -19,11 +19,11 @@ figma.ui.onmessage = (msg) => __awaiter(this, void 0, void 0, function* () {
     // your HTML page is to use an object with a "type" property like this.
     yield figma.loadFontAsync({ family: "Roboto", style: "Regular" });
     if (msg.type === 'create-rectangles') {
-        let cov = { width: 1920, height: 960, title: msg.textbox };
+        let cov = { width: 1920, height: 960, title: msg.name };
         const nodes = [];
         const rect = figma.createRectangle();
         const text2 = figma.createText();
-        text2.characters = cov.title;
+        text2.characters = msg.name;
         rect.resize(cov.width, cov.height);
         text2.x = 100;
         text2.y = 708;

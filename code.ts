@@ -24,11 +24,11 @@ figma.ui.onmessage = async(msg) => {
   // your HTML page is to use an object with a "type" property like this.
   await figma.loadFontAsync({ family: "Roboto", style: "Regular" })
   if (msg.type === 'create-rectangles') {
-    let cov: Cover = {width: 1920, height: 960,title: msg.textbox}
+    let cov: Cover = {width: 1920, height: 960,title: msg.name}
     const nodes: SceneNode[] = [];
     const rect = figma.createRectangle();
     const text2 = figma.createText();
-    text2.characters = cov.title;
+    text2.characters = msg.name;
     rect.resize(cov.width, cov.height)
     text2.x = 100;
     text2.y = 708;

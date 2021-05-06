@@ -5,8 +5,16 @@
 <script>
 
 document.getElementById('create').onclick = () => {
-  const textbox = document.getElementById('title').value;
-  parent.postMessage({ pluginMessage: { type: 'create-rectangles', textbox} }, '*')
+  let name = "";
+  var request = new XMLHttpRequest()
+  request.open('GET', 'https://api.github.com/users/manishmshiva')
+  request.responseType = 'json'
+  //request.setRequestHeader("Authorization", "Basic " + btoa("arundsgn@gmail.com:2DirK5jxPP2dbAlY5OKs4025"));
+  //request.setRequestHeader('Authorization', 'Bearer ' + '2DirK5jxPP2dbAlY5OKs4025');
+  request.send()
+  request.onload = () => {
+    window.parent.postMessage({pluginMessage: {type: 'create-rectangles', name: request.response.login }}, '*')
+  };
 }
 
 document.getElementById('cancel').onclick = () => {
