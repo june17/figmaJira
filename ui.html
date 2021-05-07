@@ -1,24 +1,43 @@
 <h2>Cover art Creator</h2>
-<p>Enter Title: <input id="title" placeholder="eg: onboarding improvements"></p>
-<button id="create">Create</button>
-<button id="cancel">Cancel</button>
+<div>
+  <p>Enter Title: <input id="title" placeholder="eg: onboarding improvements"></p>
+  <button id="create">Create</button>
+  <button id="cancel">Cancel</button>
+</div>
+<div>
+  <p>Epic</p>
+  <button id="find-epic">All Epics</button>
+</div>
+
 <script>
 
 document.getElementById('create').onclick = () => {
+  const textbox = document.getElementById('title').value;
+  parent.postMessage({pluginMessage: {type: 'create-rectangles', name: textbox }}, '*')
+}
+
+document.getElementById('find-epic').onclick = () => {
   let name = "";
   var request = new XMLHttpRequest()
-  request.open('GET', 'https://api.github.com/users/manishmshiva')
-  request.responseType = 'json'
-  //request.setRequestHeader("Authorization", "Basic " + btoa("arundsgn@gmail.com:2DirK5jxPP2dbAlY5OKs4025"));
-  //request.setRequestHeader('Authorization', 'Bearer ' + '2DirK5jxPP2dbAlY5OKs4025');
+  request.open('GET', 'https://cors-anywhere.herokuapp.com/https://boombang.atlassian.net/rest/agile/1.0/board/1/epic') //using cors proxy
+  request.responseType = 'text'
+  request.setRequestHeader("Authorization", "Basic " + btoa("arundsgn@gmail.com:2DirK5jxPP2dbAlY5OKs4025"));
   request.send()
+  // request.onload = () => {
+  //   window.parent.postMessage({pluginMessage: {type: 'create-rectangles', name: request.response }}, '*')
+  // };
   request.onload = () => {
-    window.parent.postMessage({pluginMessage: {type: 'create-rectangles', name: request.response.login }}, '*')
-  };
+    
+  }
 }
 
 document.getElementById('cancel').onclick = () => {
   parent.postMessage({ pluginMessage: { type: 'cancel' } }, '*')
 }
-
 </script>
+
+<style>
+  * {
+    font-family: sans-serif;
+  }
+</style>
