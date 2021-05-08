@@ -7,9 +7,14 @@
 <div>
   <p>Epic</p>
   <button id="find-epic">All Epics</button>
+  <div id="loading"></div>
+  <div id="all-epics">
+  </div>
 </div>
 
 <script>
+var epicCreated = false 
+
 
 document.getElementById('create').onclick = () => {
   const textbox = document.getElementById('title').value;
@@ -20,15 +25,35 @@ document.getElementById('find-epic').onclick = () => {
   let name = "";
   var request = new XMLHttpRequest()
   request.open('GET', 'https://cors-anywhere.herokuapp.com/https://boombang.atlassian.net/rest/agile/1.0/board/1/epic') //using cors proxy
-  request.responseType = 'text'
+  request.responseType = 'json'
   request.setRequestHeader("Authorization", "Basic " + btoa("arundsgn@gmail.com:2DirK5jxPP2dbAlY5OKs4025"));
   request.send()
+  request.addEventListener("progress", updateProgress)
   // request.onload = () => {
   //   window.parent.postMessage({pluginMessage: {type: 'create-rectangles', name: request.response }}, '*')
   // };
   request.onload = () => {
-    
+    const epicsContainer = document.getElementById('all-epics');
+    if(request.response != null) {
+      if(request.response.values != null) {
+        request.response.values.forEach(i => {
+        const epicItem = document.createElement('button');
+        let functionName = "epicchooser"+ `("` + i.name + `")`;
+        epicItem.setAttribute("onclick", functionName);
+        epicItem.innerText = i.name;
+        epicsContainer.append(epicItem)
+        epicCreated = true
+        })
+      }
+    }
   }
+}
+function updateProgress () {
+  document.getElementById('loading').innerText = "loading";
+}
+
+function epicchooser(itemName) {
+    window.parent.postMessage({pluginMessage: {type: 'create-rectangles', name: itemName }}, '*')
 }
 
 document.getElementById('cancel').onclick = () => {

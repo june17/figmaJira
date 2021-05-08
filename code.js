@@ -13,7 +13,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 // You can access browser APIs in the <script> tag inside "ui.html" which has a
 // full browser environment (see documentation).
 // This shows the HTML page in "ui.html".
-figma.showUI(__html__);
+figma.showUI(__html__, { height: 420 });
 figma.ui.onmessage = (msg) => __awaiter(this, void 0, void 0, function* () {
     // One way of distinguishing between different types of messages sent from
     // your HTML page is to use an object with a "type" property like this.
