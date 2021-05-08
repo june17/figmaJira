@@ -5,8 +5,8 @@
   <button id="cancel">Cancel</button>
 </div>
 <div>
-  <p>Epic</p>
-  <button id="find-epic">All Epics</button>
+  <p>All Epics</p>
+  <button id="find-epic">Load</button>
   <div id="loading"></div>
   <div id="all-epics">
   </div>
@@ -28,18 +28,21 @@ document.getElementById('find-epic').onclick = () => {
   request.responseType = 'json'
   request.setRequestHeader("Authorization", "Basic " + btoa("arundsgn@gmail.com:2DirK5jxPP2dbAlY5OKs4025"));
   request.send()
-  request.addEventListener("progress", updateProgress)
-  // request.onload = () => {
-  //   window.parent.postMessage({pluginMessage: {type: 'create-rectangles', name: request.response }}, '*')
-  // };
+  request.onprogress = () => {
+    document.getElementById('loading').innerText = "loading";
+  }
   request.onload = () => {
     const epicsContainer = document.getElementById('all-epics');
+
+    document.getElementById('loading').innerText = "";
+
     if(request.response != null) {
       if(request.response.values != null) {
         request.response.values.forEach(i => {
         const epicItem = document.createElement('button');
         let functionName = "epicchooser"+ `("` + i.name + `")`;
         epicItem.setAttribute("onclick", functionName);
+        epicItem.setAttribute("class", "epics-item")
         epicItem.innerText = i.name;
         epicsContainer.append(epicItem)
         epicCreated = true
@@ -47,9 +50,6 @@ document.getElementById('find-epic').onclick = () => {
       }
     }
   }
-}
-function updateProgress () {
-  document.getElementById('loading').innerText = "loading";
 }
 
 function epicchooser(itemName) {
@@ -64,5 +64,26 @@ document.getElementById('cancel').onclick = () => {
 <style>
   * {
     font-family: sans-serif;
+  }
+  .epics-item{
+    border: none;
+    margin: 0;
+    text-decoration: none;
+    background:none;
+    color: #0a0a0a;
+    font-family: sans-serif;
+    font-size: 1rem;
+    cursor: pointer;
+    text-align: left;
+    transition: background 250ms ease-in-out, 
+                transform 150ms ease;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    padding: .5rem 0;
+  }
+
+  #all-epics {
+    display: flex;
+    flex-direction: column;
   }
 </style>
